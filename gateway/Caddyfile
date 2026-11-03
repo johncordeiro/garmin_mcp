@@ -1,0 +1,17 @@
+:{$PORT}
+
+@bearer header Authorization "Bearer {$MCP_TOKEN}"
+@query query token={$MCP_TOKEN}
+
+handle /healthz {
+	respond "ok" 200
+}
+handle @bearer {
+	reverse_proxy http://garmin-mcp.railway.internal:8000
+}
+handle @query {
+	reverse_proxy http://garmin-mcp.railway.internal:8000
+}
+handle {
+	respond 401
+}
